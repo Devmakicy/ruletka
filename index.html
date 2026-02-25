@@ -5,182 +5,152 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>VISA SPIN</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <style>
-        :root {
-            --purple: #8A2BE2;
-            --dark-bg: #0a0a0a;
-            --metallic: linear-gradient(180deg, #FFFFFF 0%, #A0A0A0 50%, #404040 100%);
-        }
+ <style>
+    :root {
+        --purple: #8A2BE2;
+        --dark-bg: #0a0a0a;
+        --metallic: linear-gradient(180deg, #FFFFFF 0%, #A0A0A0 50%, #404040 100%);
+    }
 
-        body {
-            background: radial-gradient(circle at center, #1a0033 0%, #000 100%);
-            color: #fff;
-            font-family: 'Segoe UI', Roboto, sans-serif;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+    body {
+        background: #000;
+        color: #fff;
+        font-family: sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow: hidden;
+    }
 
-        .header {
-            margin-top: 20px;
-            text-align: center;
-        }
+    .header-metallic {
+        font-size: 3rem;
+        font-weight: 900;
+        background: var(--metallic);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-top: 20px;
+        text-transform: uppercase;
+    }
 
-        h1 {
-            font-size: 3.5rem;
-            margin: 0;
-            background: var(--metallic);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 900;
-            letter-spacing: -2px;
-            filter: drop-shadow(0 0 10px rgba(138, 43, 226, 0.5));
-        }
+    /* Контейнер колеса */
+    .wheel-container {
+        position: relative;
+        width: 350px;
+        height: 350px;
+        margin: 40px 0;
+    }
 
-        .sub-text { color: #bbb; font-size: 0.9rem; margin-top: 5px; }
+    .wheel {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: 10px solid #1a1a1a;
+        position: relative;
+        overflow: hidden;
+        transition: transform 5s cubic-bezier(0.15, 0, 0.15, 1);
+        box-shadow: 0 0 40px var(--purple);
+    }
 
-        /* Колесо */
-        .wheel-box {
-            position: relative;
-            width: 320px;
-            height: 320px;
-            margin: 30px 0;
-            border: 8px solid #1a1a1a;
-            border-radius: 50%;
-            box-shadow: 0 0 50px rgba(138, 43, 226, 0.4);
-        }
+    /* Сектора и текст */
+    .segment {
+        position: absolute;
+        width: 50%;
+        height: 50%;
+        left: 50%;
+        top: 0;
+        transform-origin: 0% 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-        .wheel {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: conic-gradient(
-                #1a1a1a 0% 16.6%, #2a004d 16.6% 33.3%,
-                #1a1a1a 33.3% 50%, #2a004d 50% 66.6%,
-                #1a1a1a 66.6% 83.3%, #2a004d 83.3% 100%
-            );
-            transition: transform 5s cubic-bezier(0.15, 0, 0.15, 1);
-            position: relative;
-            overflow: hidden;
-        }
+    .segment span {
+        transform: rotate(30deg); /* Центрируем текст в секторе */
+        font-size: 12px;
+        font-weight: bold;
+        text-align: center;
+        width: 120px;
+        margin-left: 60px;
+        color: #eee;
+        text-shadow: 1px 1px 2px #000;
+    }
 
-        .pointer {
-            position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 30px;
-            height: 40px;
-            background: var(--purple);
-            clip-path: polygon(50% 100%, 0 0, 100% 0);
-            z-index: 10;
-        }
+    /* Центральная кнопка */
+    .spin-center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80px;
+        height: 80px;
+        background: var(--purple);
+        border-radius: 50%;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        border: 4px solid #fff;
+        box-shadow: 0 0 20px var(--purple);
+        cursor: pointer;
+    }
 
-        .btn-gas {
-            background: var(--purple);
-            color: white;
-            padding: 18px 50px;
-            border: none;
-            border-radius: 12px;
-            font-weight: bold;
-            font-size: 1.2rem;
-            cursor: pointer;
-            box-shadow: 0 0 25px var(--purple);
-            text-transform: uppercase;
-        }
-
-        /* Форма */
-        #form-container {
-            display: none;
-            background: rgba(20, 20, 20, 0.95);
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 100;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        input {
-            width: 80%;
-            max-width: 300px;
-            padding: 15px;
-            margin: 10px 0;
-            background: #111;
-            border: 1px solid var(--purple);
-            color: #fff;
-            border-radius: 10px;
-        }
-    </style>
+    /* Стрелка сверху */
+    .arrow {
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0; height: 0;
+        border-left: 15px solid transparent;
+        border-right: 15px solid transparent;
+        border-top: 25px solid #fff;
+        z-index: 20;
+    }
+</style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>VISA SPIN</h1>
-        <div class="sub-text">крути колесо, забирай ништяки</div>
-    </div>
+    <h1 class="header-metallic">VISA SPIN</h1>
 
-    <div class="wheel-box">
-        <div class="pointer"></div>
-        <div class="wheel" id="wheel"></div>
-    </div>
+<div class="wheel-container">
+    <div class="arrow"></div>
+    <div class="spin-center" onclick="doSpin()">SPIN</div>
+    <div class="wheel" id="wheel">
+        </div>
+</div>
 
-    <button class="btn-gas" id="spinBtn" onclick="doSpin()">ГАЗЗЗ, БРО ►</button>
+<script>
+    const prizes = [
+        "1 на 1 созвон", "Фидбек", "VISA паки", 
+        "Помощь с битом", "Лупкит", "Секреты"
+    ];
 
-    <div id="form-container">
-        <h2 style="color: var(--purple)">КРАСАВА! ТЫ ВЫИГРАЛ!</h2>
-        <p id="win-prize" style="font-weight: bold;"></p>
-        <input type="text" id="name" placeholder="Имя">
-        <input type="text" id="tg" placeholder="Ник в ТГ">
-        <input type="text" id="phone" placeholder="Номер телефона">
-        <button class="btn-gas" onclick="sendResult()">ЗАБРАТЬ ПОДГОН</button>
-    </div>
+    const wheel = document.getElementById('wheel');
+    let currentRotation = 0;
 
-    <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand();
+    // Генерируем сектора визуально
+    prizes.forEach((prize, i) => {
+        const seg = document.createElement('div');
+        seg.className = 'segment';
+        seg.style.transform = `rotate(${i * 60}deg)`;
+        seg.style.backgroundColor = i % 2 === 0 ? '#1a1a1a' : '#2a004d';
+        seg.innerHTML = `<span>${prize}</span>`;
+        wheel.appendChild(seg);
+    });
 
-        const prizes = [
-            "1 на 1 созвон", "Фидбек на треки", 
-            "VISA паки", "Помощь с битом", 
-            "Уникальный лупкит", "Секретный подгон"
-        ];
+    function doSpin() {
+        const extraDeg = Math.floor(Math.random() * 360) + 3600; 
+        currentRotation += extraDeg;
+        wheel.style.transform = `rotate(${currentRotation}deg)`;
 
-        let currentRotation = 0;
-
-        function doSpin() {
-            const btn = document.getElementById('spinBtn');
-            btn.disabled = true;
-            
-            const wheel = document.getElementById('wheel');
-            const extraDeg = Math.floor(Math.random() * 360) + 3600; // 10 полных кругов + рандом
-            currentRotation += extraDeg;
-            
-            wheel.style.transform = `rotate(${currentRotation}deg)`;
-
-            setTimeout(() => {
-                const actualDeg = currentRotation % 360;
-                const prizeIndex = Math.floor((360 - actualDeg) / 60) % 6;
-                const winPrize = prizes[prizeIndex];
-
-                document.getElementById('win-prize').innerText = winPrize;
-                document.getElementById('form-container').style.display = 'flex';
-            }, 5500);
-        }
-
-        function sendResult() {
-            const data = {
-                prize: document.getElementById('win-prize').innerText,
-                name: document.getElementById('name').value,
-                user: document.getElementById('tg').value,
-                phone: document.getElementById('phone').value
-            };
-            tg.sendData(JSON.stringify(data));
-        }
-    </script>
+        setTimeout(() => {
+            const actualDeg = (360 - (currentRotation % 360)) % 360;
+            const prizeIndex = Math.floor(actualDeg / 60);
+            alert("Твой подгон: " + prizes[prizeIndex]);
+            // Здесь открывай форму данных
+        }, 5500);
+    }
+</script>
 </body>
 </html>
