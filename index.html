@@ -1,156 +1,27 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>VISA SPIN</title>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>VISA SPIN — Колесо фортуны</title>
+    <meta name="description" content="Крути колесо фортуны VISA SPIN и забирай крутые призы для музыкального продакшена" />
+    <meta name="author" content="Lovable" />
+
+    <!-- TODO: Update og:title to match your application name -->
+    <meta property="og:title" content="Lovable App" />
+    <meta property="og:description" content="Lovable Generated Project" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@Lovable" />
+    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    <script type="module" crossorigin src="/assets/index-BhxbZu_j.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CjtogDnb.css">
+  </head>
+
+  <body>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
- <style>
-    :root {
-        --purple: #8A2BE2;
-        --dark-bg: #0a0a0a;
-        --metallic: linear-gradient(180deg, #FFFFFF 0%, #A0A0A0 50%, #404040 100%);
-    }
-
-    body {
-        background: #000;
-        color: #fff;
-        font-family: sans-serif;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        overflow: hidden;
-    }
-
-    .header-metallic {
-        font-size: 3rem;
-        font-weight: 900;
-        background: var(--metallic);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        margin-top: 20px;
-        text-transform: uppercase;
-    }
-
-    /* Контейнер колеса */
-    .wheel-container {
-        position: relative;
-        width: 350px;
-        height: 350px;
-        margin: 40px 0;
-    }
-
-    .wheel {
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-        border: 10px solid #1a1a1a;
-        position: relative;
-        overflow: hidden;
-        transition: transform 5s cubic-bezier(0.15, 0, 0.15, 1);
-        box-shadow: 0 0 40px var(--purple);
-    }
-
-    /* Сектора и текст */
-    .segment {
-        position: absolute;
-        width: 50%;
-        height: 50%;
-        left: 50%;
-        top: 0;
-        transform-origin: 0% 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .segment span {
-        transform: rotate(30deg); /* Центрируем текст в секторе */
-        font-size: 12px;
-        font-weight: bold;
-        text-align: center;
-        width: 120px;
-        margin-left: 60px;
-        color: #eee;
-        text-shadow: 1px 1px 2px #000;
-    }
-
-    /* Центральная кнопка */
-    .spin-center {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 80px;
-        height: 80px;
-        background: var(--purple);
-        border-radius: 50%;
-        z-index: 10;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        border: 4px solid #fff;
-        box-shadow: 0 0 20px var(--purple);
-        cursor: pointer;
-    }
-
-    /* Стрелка сверху */
-    .arrow {
-        position: absolute;
-        top: -20px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 0; height: 0;
-        border-left: 15px solid transparent;
-        border-right: 15px solid transparent;
-        border-top: 25px solid #fff;
-        z-index: 20;
-    }
-</style>
-</head>
-<body>
-
-    <h1 class="header-metallic">VISA SPIN</h1>
-
-<div class="wheel-container">
-    <div class="arrow"></div>
-    <div class="spin-center" onclick="doSpin()">SPIN</div>
-    <div class="wheel" id="wheel">
-        </div>
-</div>
-
-<script>
-    const prizes = [
-        "1 на 1 созвон", "Фидбек", "VISA паки", 
-        "Помощь с битом", "Лупкит", "Секреты"
-    ];
-
-    const wheel = document.getElementById('wheel');
-    let currentRotation = 0;
-
-    // Генерируем сектора визуально
-    prizes.forEach((prize, i) => {
-        const seg = document.createElement('div');
-        seg.className = 'segment';
-        seg.style.transform = `rotate(${i * 60}deg)`;
-        seg.style.backgroundColor = i % 2 === 0 ? '#1a1a1a' : '#2a004d';
-        seg.innerHTML = `<span>${prize}</span>`;
-        wheel.appendChild(seg);
-    });
-
-    function doSpin() {
-        const extraDeg = Math.floor(Math.random() * 360) + 3600; 
-        currentRotation += extraDeg;
-        wheel.style.transform = `rotate(${currentRotation}deg)`;
-
-        setTimeout(() => {
-            const actualDeg = (360 - (currentRotation % 360)) % 360;
-            const prizeIndex = Math.floor(actualDeg / 60);
-            alert("Твой подгон: " + prizes[prizeIndex]);
-            // Здесь открывай форму данных
-        }, 5500);
-    }
-</script>
-</body>
+    <div id="root"></div>
+  </body>
 </html>
